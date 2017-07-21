@@ -1,3 +1,57 @@
-<h1>
-  {{title}}
-</h1>
+<div class="row thumbnail">
+  <div class="col-xs-12">
+    <h3>Programming assignment</h3>
+    <h4>User interface overview:</h4>
+      <ul>
+      <li>Tap on the map to select coordinates and press [Add car] button. New marker should appear on the map.</li>
+      <li>Click on the marker to select the vehicle. New features should appear on the right panel.</li>
+      <li>Click somewhere close by on the map and click [Go] button. The generated route should appear on the
+        map and the car should start moving along the route.</li>
+      <li>The selected vehicle can be deleted by pressing [Delete car] button.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row map-row">
+  <div class="col-xs-7">
+    <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="onSelectCoordinates($event)">
+      <agm-polyline *ngIf="carSelected && selectedCarPath != null">
+        <agm-polyline-point *ngFor="let p of selectedCarPath" [latitude]="p.lat" [longitude]="p.lng"></agm-polyline-point>
+      </agm-polyline>
+      <agm-marker *ngFor="let v of vehicles" [latitude]="v.lat" [longitude]="v.lng" [title]="v.name" [label]="v.name" (markerClick)="onSelectCurrentCar(v);"></agm-marker>
+    </agm-map>
+  </div>
+
+  <div class="col-xs-5">
+    <div class="thumbnail text-center">
+      <h4>Add new car at coordinates</h4>
+      <input type="text" [(ngModel)]="selectedLat">
+      <input type="text" [(ngModel)]="selectedLng">
+      <button class="btn btn-success" (click)="addVehicle(newCar, selectedLat, selectedLng)">Add car</button>
+    </div>
+
+    <div class="thumbnail text-center" *ngIf="carSelected">
+      <h4>Send selected car <strong>{{selectedCarName}}</strong> to coordinates</h4>
+      <input type="text" [(ngModel)]="selectedLat">
+      <input type="text" [(ngModel)]="selectedLng">
+      <button class="btn btn-success" (click)="driveTo(selectedCarName, selectedLat, selectedLng)">Go</button>
+    </div>
+
+    <div class="thumbnail text-center" *ngIf="carSelected">
+      <h4>Delete selected car <strong>{{selectedCarName}}</strong></h4>
+      <button class="btn btn-warning" (click)="deleteVehicle(selectedCarName)">Delete car</button>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-warning" *ngIf="errorMessage != null">
+  <div class="row">
+    <div class="col-xs-10">
+      <h4 class="text-error">Communication error</h4>
+      <p class="text-error">{{errorMessage}}</p>
+    </div>
+    <div class="col-xs-2 text-right">
+      <button class="btn btn-error" (click)="errorMessage = null">Hide</button>
+    </div>
+  </div>
+</div>
