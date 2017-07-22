@@ -4,7 +4,6 @@ import {VehicleParams} from "./model/vehicle.params";
 import {AgmCoreModule, MouseEvent, AgmPolyline, AgmPolylinePoint} from '@agm/core';
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
-import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-root',

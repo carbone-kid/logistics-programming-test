@@ -1,0 +1,1 @@
+docker exec -it logistics-backend /bin/bash
